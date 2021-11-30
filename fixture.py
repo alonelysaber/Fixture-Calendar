@@ -1,13 +1,4 @@
-"""
-Welcome to my first serious python project 
-I will be trying to build a program that lets me know when a football team's next fixture is without needing
-to google again and again for it.
-The basic idea is for the program to make a google search about the fixture whenever I ask for it
-If the barebones program works well, I may have date to implement a neat GUI to go with it.
-Let the hacking begin
-Update: 1:43 am 25 oct. All basic funcionality seems good. Program is working as expected. Next step will be to
-upload to github and hopefully scale this up to a gui output using basic tkinter.
-"""
+
 
 from bs4 import BeautifulSoup
 import requests
