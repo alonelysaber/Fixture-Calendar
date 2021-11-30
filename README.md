@@ -16,3 +16,6 @@ This simple python file will tell you the team's next game, date, team they're p
 - PSG
 - Barcelona
 - Tottenham Hotspurs
+
+## Instructions:-
+Simply download and run the fixtures.py file and watch the program display the schedule.
