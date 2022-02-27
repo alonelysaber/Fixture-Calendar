@@ -39,7 +39,6 @@ def parser(url):
 
 
 def team_parser(team):
-    print(int(team) < len(TEAMS) + 1)
     if int(team) < len(TEAMS) + 1:
         url = f"https://www.espn.in/football/team/fixtures/_/id/{TEAMS[int(team) - 1]}"
         parser(url)
