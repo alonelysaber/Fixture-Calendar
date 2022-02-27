@@ -1,221 +1,63 @@
 from bs4 import BeautifulSoup
-import requests
-import os
+from requests import get
 
-os.system('color')
+# The main array for the teams URL
+TEAMS = ["86/real-madrid", "360/manchester-united", "364/liverpool", "160/paris-saint-germain", "83/barcelona",
+         "367/tottenham-hotspur", "132/bayern-munich"]
 
-    
-def realmadrid():
-    url = "https://www.espn.in/football/team/fixtures/_/id/86/real-madrid"
 
-    page = requests.get(url)
+def team_name(url):
+    req = get(url)
+    soup = BeautifulSoup(req.content, "html.parser")
 
-    soup = BeautifulSoup(page.content, "lxml") 
-    
-    team1 = soup.select('div.local')[0].text 
-    team2 = soup.select('div.away')[0].text
-    date = soup.select('div.matchTeams')[0].text
-    time = soup.select('td.Table__TD')[4].text
-    comp = soup.select('td.Table__TD')[5].text
-    placement = soup.select('ul.list')[0].text
-    
-    date_time_comp = ' on ' + date + ' at ' + time + ' in the ' + comp
-    
-    main_team = "Real Madrid"
+    # Finding by class name
+    return soup.find(class_="db fw-bold").text
 
-    bolded_main_team = "\033[1m" + main_team + "\033[0m"
-    
-    if team1 == main_team:
-        print('• ' + bolded_main_team + ' vs ' + team2 + date_time_comp)
-    else:
-        print('• ' + bolded_main_team + ' vs ' + team1 + date_time_comp)
-        
-    print('  ' + 'Real Madrid are ' + placement)
-        
-    
 
-def manu():
-    url = "https://www.espn.in/football/team/fixtures/_/id/360/manchester-united"
+def parser(url):
+    page = get(url)
+    soup = BeautifulSoup(page.content, "lxml")
+    team1 = soup.select("div.local")[0].text
+    team2 = soup.select("div.away")[0].text
+    date = soup.select("div.matchTeams")[0].text
+    time = soup.select("td.Table__TD")[4].text
+    comp = soup.select("td.Table__TD")[5].text
+    placement = soup.select("ul.list")[0].text
 
-    page = requests.get(url)
+    date_time_comp = " on " + date + " at " + time + " in the " + comp
 
-    soup = BeautifulSoup(page.content, "lxml") 
-    
-    team1 = soup.select('div.local')[0].text 
-    team2 = soup.select('div.away')[0].text
-    date = soup.select('div.matchTeams')[0].text
-    time = soup.select('td.Table__TD')[4].text
-    comp = soup.select('td.Table__TD')[5].text
-    placement = soup.select('ul.list')[0].text
-    date_time_comp = ' on ' + date + ' at ' + time + ' in the ' + comp
-    
-    main_team = "Manchester United"
-
-    bolded_main_team = "\033[1m" + main_team + "\033[0m"
-    
-    if team1 == main_team:
-        print('• ' + bolded_main_team + ' vs ' + team2 + date_time_comp)
-    else:
-        print('• ' + bolded_main_team + ' vs ' + team1 + date_time_comp)
-        
-    print('  ' + 'Manchester United are ' + placement)
-        
-def liverpool():
-    url = "https://www.espn.in/football/team/fixtures/_/id/364/liverpool"
-
-    page = requests.get(url)
-
-    soup = BeautifulSoup(page.content, "lxml") 
-    
-    team1 = soup.select('div.local')[0].text 
-    team2 = soup.select('div.away')[0].text
-    date = soup.select('div.matchTeams')[0].text
-    time = soup.select('td.Table__TD')[4].text
-    comp = soup.select('td.Table__TD')[5].text
-    placement = soup.select('ul.list')[0].text
-
-    
-    date_time_comp = ' on ' + date + ' at ' + time + ' in the ' + comp
-    main_team = 'Liverpool'
+    main_team = team_name(url).rstrip()
 
     bolded_main_team = "\033[1m" + main_team + "\033[0m"
 
     if team1 == main_team:
-         print('• ' + bolded_main_team + ' vs ' + team2 + date_time_comp)
+        print("• " + bolded_main_team + " vs " + team2 + date_time_comp)
     else:
-        print('• ' + bolded_main_team + ' vs ' + team1 + date_time_comp)
-        
-    print('  ' + 'Liverpool are ' + placement)
+        print('• ' + bolded_main_team + " vs " + team1 + date_time_comp)
+
+    print("  " + f"{bolded_main_team} are " + placement)
 
 
-def psg():
-    url = "https://www.espn.in/football/team/fixtures/_/id/160/paris-saint-germain"
-
-    page = requests.get(url)
-
-    soup = BeautifulSoup(page.content, "lxml") 
-    
-    team1 = soup.select('div.local')[0].text 
-    team2 = soup.select('div.away')[0].text
-    date = soup.select('div.matchTeams')[0].text
-    time = soup.select('td.Table__TD')[4].text
-    comp = soup.select('td.Table__TD')[5].text
-    placement = soup.select('ul.list')[0].text
-    
-    date_time_comp = ' on ' + date + ' at ' + time + ' in the ' + comp
-    
-    main_team = 'Paris Saint-Germain '
-
-    bolded_main_team = "\033[1m" + main_team + "\033[0m"
-
-    if team1 == main_team:
-           print('• ' + bolded_main_team + ' vs ' + team2 + date_time_comp)
-
+def team_parser(team):
+    print(int(team) < len(TEAMS) + 1)
+    if int(team) < len(TEAMS) + 1:
+        url = f"https://www.espn.in/football/team/fixtures/_/id/{TEAMS[int(team) - 1]}"
+        parser(url)
     else:
-          print('• ' + bolded_main_team + ' vs ' + team1 + date_time_comp)
-          
-    print('  ' + 'PSG are ' + placement)
-
-def barca():
-    url = "https://www.espn.in/football/team/fixtures/_/id/83/barcelona"
-
-    page = requests.get(url)
-
-    soup = BeautifulSoup(page.content, "lxml") 
-    
-    team1 = soup.select('div.local')[0].text 
-    team2 = soup.select('div.away')[0].text
-    date = soup.select('div.matchTeams')[0].text
-    time = soup.select('td.Table__TD')[4].text
-    comp = soup.select('td.Table__TD')[5].text
-    placement = soup.select('ul.list')[0].text
-
-    
-    date_time_comp = ' on ' + date + ' at ' + time + ' in the ' + comp
-
-    main_team = 'Barcelona'
-
-    bolded_main_team = "\033[1m" + main_team + "\033[0m"
-    
-    if team1 == main_team:
-        print('• ' + bolded_main_team + ' vs ' + team2 + date_time_comp)
-    else:
-        print('• ' + bolded_main_team + ' vs ' + team1 + date_time_comp)
-        
-    print('  ' + 'Barcelona are ' + placement)
-
-def hotspur():
-    url = "https://www.espn.in/football/team/fixtures/_/id/367/tottenham-hotspur"
-
-    page = requests.get(url)
-
-    soup = BeautifulSoup(page.content, "lxml") 
-    
-    team1 = soup.select('div.local')[0].text 
-    team2 = soup.select('div.away')[0].text
-    date = soup.select('div.matchTeams')[0].text
-    time = soup.select('td.Table__TD')[4].text
-    comp = soup.select('td.Table__TD')[5].text
-    placement = soup.select('ul.list')[0].text
-
-    
-    date_time_comp = ' on ' + date + ' at ' + time + ' in the ' + comp
-
-    main_team = "Tottenham Hotspur"
-
-    bolded_main_team = "\033[1m" + main_team + "\033[0m"
-    
-    if team1 == main_team:
-        print('• ' + bolded_main_team + ' vs ' + team2 + date_time_comp)
-        
-    else:
-        print('• ' + bolded_main_team + ' vs ' + team1 + date_time_comp)
-        
-    print('  ' + 'Tottenham Hotspur are ' + placement)
-
-def bayern():
-    url = "https://www.espn.in/football/team/fixtures/_/id/132/bayern-munich"
-
-    page = requests.get(url)
-
-    soup = BeautifulSoup(page.content, "lxml") 
-    
-    team1 = soup.select('div.local')[0].text 
-    team2 = soup.select('div.away')[0].text
-    date = soup.select('div.matchTeams')[0].text
-    time = soup.select('td.Table__TD')[4].text
-    comp = soup.select('td.Table__TD')[5].text
-    placement = soup.select('ul.list')[0].text
-    
-    date_time_comp = ' on ' + date + ' at ' + time + ' in the ' + comp
-
-    main_team = 'Bayern Munich'
-
-    bolded_main_team = "\033[1m" + main_team + "\033[0m"
-
-    if team1 == main_team:
-        print('• ' + bolded_main_team + ' vs ' + team2 + date_time_comp)
-        
-    else:
-        print('• ' + bolded_main_team + ' vs ' + team1 + date_time_comp)
-    
-    print('  ' + 'Bayern Munich are ' + placement)
+        count = 0
+        while len(TEAMS) > count:
+            url = f"https://www.espn.in/football/team/fixtures/_/id/{TEAMS[count]}"
+            parser(url)
+            count += 1
 
 
-
-realmadrid()
-print("")
-manu()
-print("")
-liverpool()
-print("")
-psg()
-print("")
-barca()
-print("")
-hotspur()
-print("")
-bayern()
-
-
-input()
+if __name__ == '__main__':
+    while True:
+        team_selection = input(
+            "Please select a team by indicating the number: \n 1. Real Madrid \n 2. Manchester United \n 3. Liverpool "
+            "\n 4. PSG \n 5. Barcelona \n 6. Tottenham Hotspurs \n 7. Bayern Munich \n 8. All teams \n")
+        if team_selection.isnumeric() and int(team_selection) in range(1, len(TEAMS) + 2):
+            team_parser(team_selection)
+            break
+        else:
+            print("Invalid input, please try again")
